@@ -67,8 +67,7 @@ class TeacherController extends Controller
 
     public function getCourse(Request $request)
     {
-        //$year = getCourseYear();
-        $year = 162;
+        $year = getCourseYear();
         $user = $request->get('user');
         $week = $request->get('week') ? : 0;
 
@@ -265,8 +264,7 @@ class TeacherController extends Controller
 
     public function getCourseList(Request $request)
     {
-        //$year = getCourseYear();
-        $year = 162;
+        $year = getCourseYear();
         $user = $request->get('user');
         $week = 0;
 
