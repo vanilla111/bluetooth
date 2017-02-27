@@ -10,7 +10,7 @@ class TCourse extends Model
 
     protected $primaryKey = 'tcid';
 
-    protected $fillable = ['trid', 'scNum', 'jxbID','hash_day', 'hash_lesson', 'begin_lesson', 'day', 'lesson', 'course',
+    protected $fillable = ['trid', 'scNum', 'jxbID', 'year','hash_day', 'hash_lesson', 'begin_lesson', 'day', 'lesson', 'course',
         'teacher', 'type', 'classroom', 'majorName', 'class', 'rawWeek', 'period', 'week'];
 
     public function getCourse($trid, $year)

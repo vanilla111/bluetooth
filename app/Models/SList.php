@@ -10,5 +10,5 @@ class SList extends Model
 
     protected $primaryKey = 'id';
 
-    protected $fillable = ['jxbID', 'stu_list'];
+    protected $fillable = ['jxbID', 'year','stu_list'];
 }

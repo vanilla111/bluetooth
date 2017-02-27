@@ -27,21 +27,14 @@ class TeacherController extends Controller
         //
         $res = SList::where(['jxbID' => 'A041611523783'])->select('stu_list')->first();
         $stu_list = unserialize($res['stu_list']);
-        //return $stu_list;
-        $status = [];
-        for ($i = 0; $i < count($stu_list); $i ++) {
-            $status[$i] = random_int(1, 5);
-        }
-        return implode(',' , $status);
-//        $start = 1;
-//        $end = 6971;
-//        for ($i = $start; $i < $end; $i++) {
-//            $res = TCourse::where('tcid', $i)->select('scNum')->first();
-//            $data = [
-//                'scNum' => trim($res['scNum'])
-//            ];
-//            TCourse::where('tcid', $i)->update($data);
+        return response()->json($stu_list);
+//        $status = [];
+//        for ($i = 0; $i < count($stu_list); $i ++) {
+//            $status[$i] = random_int(1, 5);
 //        }
+//        return implode(',' , $status);
+
+
     }
 
     /*登录*/
@@ -412,7 +405,33 @@ class TeacherController extends Controller
 
     public function setStuStatus(Request $request)
     {
-        //
+        $need = ['ccid', 'status'];
+        $user = $request->get('user');
+        $info = $request->only($need);
+
+        if (!is_int($info['status']))
+            return response()->json([
+                'status' => 400,
+                'message' => 'failed'
+            ], 400);
+
+        $condition = [
+            'ccid' => $info['ccid'],
+            'trid' => $user['trid']
+        ];
+        $data = [
+            'status' => $info['status']
+        ];
+        if (!CourseCheck::where($condition)->update($data))
+            return response()->json([
+                'status' => 404,
+                'message' => 'Not Found'
+            ], 404);
+
+        return response()->json([
+            'stauts' => 200,
+            'message' => 'success'
+        ], 200);
     }
 
     /**

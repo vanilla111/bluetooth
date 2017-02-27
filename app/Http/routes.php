@@ -42,6 +42,7 @@ Route::group(['middleware' => ['web'], 'prefix' => 'api'], function () {
                 Route::get('/weekstatistics', 'TeacherController@getWeekStatistics')->middleware('tea.statistics');
                 Route::get('/monthstatistics', 'TeacherController@getMonthStatistics');
                 Route::get('/stulist', 'TeacherController@getStuList')->middleware('tea.stu.list');
+                Route::put('stu', 'TeacherController@setStuStatus');
             });
         });
     });
@@ -54,3 +55,9 @@ Route::group(['middleware' => ['web'], 'prefix' => 'api'], function () {
         });
     });
 });
+
+
+//Route::get('/spider/teacher/list', 'Spider\TeacherController@getList');
+//Route::get('/spider/teacher/course', 'Spider\TeacherController@getCourse');
+//Route::get('/spider/teacher/course', 'Spider\TeacherController@getNewCourse');
+//Route::get('/spider/teacher/stulist', 'Spider\TeacherController@getStuList');

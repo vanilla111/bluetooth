@@ -12,9 +12,10 @@ class TeacherController extends Controller
 {
     public $teaSearch_url = "http://jwzx.cqupt.edu.cn/jwzxtmp/data/json_teacherList.php?dirId=&";  //教师列表  page  rows
 
-    public $kebiao_url = "http://jwzx.cqupt.edu.cn/jwzxtmp/showKebiao.php?"; //课表查询 type id
+    //public $kebiao_url = "http://jwzx.cqupt.edu.cn/jwzxtmp/showKebiao.php?"; //课表查询 type id
+    public $kebiao_url = "http://jwzx.cqupt.edu.cn/jwzxtmp/kebiao/kb_tea.php?teaId=";
 
-    public $JxbStuList_url = "http://jwzx.cqupt.edu.cn/jwzxtmp/showJxbStuList.php?jxb="; //教学班学生名单  jxb
+    public $JxbStuList_url = "http://jwzx.cqupt.edu.cn/jwzxtmp/kebiao/kb_stuList.php?jxb="; //教学班学生名单  jxb
 
     public function getList()
     {
@@ -46,13 +47,14 @@ class TeacherController extends Controller
     {
         $day = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'];
         $lesson = ['一二节', '三四节','五六节', '七八节', '九十节', '十一十二节'];
-        $start = 937;
+        $start = 1631;
         $end = 1647;
         $tea_m = new Teacher();
         $res = $tea_m->select('trid')->get();
+
         for ($i = $start; $i <= $end; $i++) {
             $trid = $res[$i]['trid'];
-            $url = $this->kebiao_url . 'type=teacher&id=' . $trid;
+            $url = $this->kebiao_url . $trid;
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -63,9 +65,10 @@ class TeacherController extends Controller
             preg_match_all($pattern, $output, $match_result);
 
             //循环遍历抽出所有非空课程
-            $pattern_1 = "/([\s\S]*?)<font/";
+            $pattern_1 = "/([\s\S]*?)<\/font/";
             $pattern_2 = "/<span[^>]+>([\s\S]*?)<\/span>/"; //课程类型
             $k = 8;
+            $year = getCourseYear();
             $tCourse_m = new TCourse();
             for ($m = 0; $m <= 7; $m++) {
                 if ($m > 2 && $m < 5)  //忽略中下午间隙
@@ -87,22 +90,25 @@ class TeacherController extends Controller
                                 preg_match_all($pattern_2, $arr_1[4], $match_result_2);
                                 $arr_2 = explode('-', $arr_1[1]);              //课程编号  名称
                                 $arr_3 = explode(' ', $match_result_2[1][0]);    //教师姓名  课程类型
-                                $arr_4 = explode('：', $arr_1[2]);               //上课地点
+                                $arr_4 = explode('：', $arr_1[2]);
                                 $arr_5 = $this->getWeek($match_result_1[1][0]);  //课程详细周数 课程持续时间
+                                $temp = "<font color=#FF0000>";
+                                $rawWeek = implode("", explode($temp, $match_result_1[1][0]));
                                 $data = [
                                     'trid'        => $trid,                 //教师id
                                     'scNum'       => $arr_2[0],             //课程ID
                                     'jxbID'       => $arr_1[0],             //教学班ID
-                                    'hashDay'     => $n,                    //周几 - 1
-                                    'hashLesson'  => $hashLesson,           //第几大节课 - 1
-                                    'beginLesson' => $hashLesson * 2 + 1,   //课程开始节数
+                                    'year'        => $year,                 //学年
+                                    'hash_day'     => $n,                    //周几 - 1
+                                    'hash_lesson'  => $hashLesson,           //第几大节课 - 1
+                                    'begin_lesson' => $hashLesson * 2 + 1,   //课程开始节数
                                     'day'         => $day[$n],              //周几
                                     'lesson'      => $lesson[$hashLesson],  //课程时间
                                     'course'      => $arr_2[1],             //课程名称
                                     'teacher'     => $arr_3[0],             //教师姓名
                                     'type'        => $arr_3[1],             //课程类型
-                                    'classRoom'   => $arr_4[1],             //上课地点
-                                    'rawWeek'     => $match_result_1[1][0], //课程周数
+                                    'classroom'   => trim($arr_4[1]),       //上课地点
+                                    'rawWeek'     => $rawWeek,              //课程周数
                                     'week'        => $arr_5['week'],        //课程具体周数
                                     'period'      => $arr_5['period']       //课程持续时间
                                 ];
@@ -117,20 +123,23 @@ class TeacherController extends Controller
                             $arr_3 = explode(' ', $match_result_2[1][0]);    //教师姓名  课程类型
                             $arr_4 = explode('：', $arr_1[2]);
                             $arr_5 = $this->getWeek($match_result_1[1][0]);  //课程详细周数 课程持续时间
+                            $temp = "<font color=#FF0000>";
+                            $rawWeek = implode("", explode($temp, $match_result_1[1][0]));
                             $data = [
                                 'trid'        => $trid,                 //教师id
                                 'scNum'       => $arr_2[0],             //课程ID
                                 'jxbID'       => $arr_1[0],             //教学班ID
-                                'hashDay'     => $n,                    //周几 - 1
-                                'hashLesson'  => $hashLesson,           //第几大节课 - 1
-                                'beginLesson' => $hashLesson * 2 + 1,   //课程开始节数
+                                'year'        => $year,                 //学年
+                                'hash_day'     => $n,                    //周几 - 1
+                                'hash_lesson'  => $hashLesson,           //第几大节课 - 1
+                                'begin_lesson' => $hashLesson * 2 + 1,   //课程开始节数
                                 'day'         => $day[$n],              //周几
                                 'lesson'      => $lesson[$hashLesson],  //课程时间
                                 'course'      => $arr_2[1],             //课程名称
                                 'teacher'     => $arr_3[0],             //教师姓名
                                 'type'        => $arr_3[1],             //课程类型
-                                'classRoom'   => $arr_4[1],             //上课地点
-                                'rawWeek'     => $match_result_1[1][0], //课程周数
+                                'classroom'   => trim($arr_4[1]),       //上课地点
+                                'rawWeek'     => $rawWeek,              //课程周数
                                 'week'        => $arr_5['week'],        //课程具体周数
                                 'period'      => $arr_5['period']       //课程持续时间
                             ];
@@ -145,16 +154,46 @@ class TeacherController extends Controller
         }
     }
 
+    public function getNewCourse()
+    {
+        $day = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'];
+        $lesson = ['一二节', '三四节','五六节', '七八节', '九十节', '十一十二节'];
+        $start = 154;
+        $end = 154;
+        $tea_m = new Teacher();
+        $res = $tea_m->select('trid')->get();
+
+        for ($i = $start; $i <= $end; $i++) {
+            $trid = $res[$i]['trid'];
+            $url = $this->kebiao_url . $trid;
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            $output = curl_exec($ch);
+            curl_close($ch);
+            $pattern = "/<td[^>]+>([\s\S]*?)<\/td>/"; //匹配课程
+            preg_match_all($pattern, $output, $match_result);
+
+            //按列表查询抓取数据
+
+        }
+    }
+
     public function getStuList()
     {
         $stu_list_m = new SList();
         $tCourse_m = new TCourse();
-        $start = 6882;
-        $end = 6971;
+        $start = 12641;
+        $end = 12652;
+        $year = getCourseYear();
         for ($i = $start; $i <= $end; $i++) {
             $res = $tCourse_m->select('jxbID')->where('tcid', '=', $i)->first();
             //echo $res['jxbID'] . '<br>';
-            if (!$stu_list_m->select('jxbID')->where('jxbID', '=', $res['jxbID'])->exists()) {
+            if (!$stu_list_m->select('jxbID')
+                ->where('jxbID', '=', $res['jxbID'])
+                ->where('year', '=', $year)
+                ->exists()) {
                 $curlobj = curl_init();
                 curl_setopt($curlobj, CURLOPT_URL, $this->JxbStuList_url . $res['jxbID']);
                 curl_setopt($curlobj, CURLOPT_RETURNTRANSFER, 1);
@@ -165,10 +204,24 @@ class TeacherController extends Controller
                 $pattern = "/<td>([\s\S]*?)<\/td>/"; //匹配课程
                 preg_match_all($pattern, $output, $match_result);
 
-                $list_arr = array_slice($match_result[1], 10);
+                $list_arr = array_slice($match_result[1], 12);
+                //return count($list_arr);
+                for ($j = 0; $j < count($list_arr) / 12; $j++) {
+                    $m = $j * 12;
+                    $stu_list[$j]['stuNum'] = $list_arr[$m + 1];
+                    $stu_list[$j]['name'] = $list_arr[$m + 2];
+                    $stu_list[$j]['gender'] = $list_arr[$m + 3];
+                    $stu_list[$j]['calss'] = $list_arr[$m + 4];
+                    $stu_list[$j]['major'] = $list_arr[$m + 5];
+                    $stu_list[$j]['majorName'] = $list_arr[$m + 6];
+                    $stu_list[$j]['academy'] = $list_arr[$m + 7];
+                    $stu_list[$j]['grade'] = $list_arr[$m + 8];
+                    $stu_list[$j]['type'] = $list_arr[$m + 9];
+                }
                 $data = [
                     'jxbID'    => $res['jxbID'],
-                    'stu_list' => serialize($list_arr),
+                    'year'     => $year,
+                    'stu_list' => serialize($stu_list),
                 ];
                 $stu_list_m->create($data);
             } else {
@@ -183,6 +236,7 @@ class TeacherController extends Controller
     {
         $week = [];
         $arr = explode(',', $str);
+        $period = 2;
         foreach ($arr as $key => $value) {
             $arr_0 = explode('周', $value);
             if (count($arr_0) > 1) {
@@ -197,10 +251,14 @@ class TeacherController extends Controller
                 } else {
                     array_push($week, $arr_1[0]);
                 }
-                if ($arr_0[1] == "3节连上") {
-                    $period = 3;
-                } else {
-                    $period = 2;
+                if (!empty($arr_0[1])) {
+                    $temp = explode("<font color=#FF0000>", $arr_0[1]);
+                    if (!empty($temp[1])) {
+                        if ($temp[1] == "4节连上")
+                            $period = 4;
+                        elseif ($temp[1] == "3节连上")
+                            $period = 3;
+                    }
                 }
             } else {
                 $arr_1 = explode('-', $arr_0[0]);
