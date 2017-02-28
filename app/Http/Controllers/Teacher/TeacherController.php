@@ -293,7 +293,7 @@ class TeacherController extends Controller
     public function getStatistics(Request $request)
     {
         $year = getCourseYear();
-        $week = $this->getNowWeek();
+        $week = getNowWeek();
         $user = $request->get('user');
         $hash_day = date('N', time()) - 1;
 
