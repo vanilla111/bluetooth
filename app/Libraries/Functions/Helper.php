@@ -47,10 +47,11 @@ if (! function_exists('getNowWeek')) {
         $term_start = strtotime(env('TERM_START'));
         $term_end = strtotime(env('TERM_END'));
         $start_hash_day = date('N', $term_start);
-        $now = time() - (7 - $start_hash_day) * 24 * 3600;
+        $now = time();
+        $extra_time = (7 - $start_hash_day) * 24 * 3600;
         $week = 604800;
         if ($now > $term_start && $now < $term_end)
-            return (int)(($now - $term_start) / $week) + 2;
+            return (int)(($now - $extra_time -$term_start) / $week) + 1;
 
         return 0;
     }

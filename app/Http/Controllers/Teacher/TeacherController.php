@@ -128,7 +128,7 @@ class TeacherController extends Controller
             'message' => 'success',
             'version' => env('APP_VERSION'),
             'data' => $arr_courseList,
-            'nowWeek' => $this->getNowWeek()
+            'nowWeek' => getNowWeek()
         ], 200);
     }
 
