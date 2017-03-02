@@ -211,7 +211,7 @@ class TeacherController extends Controller
                     $stu_list[$j]['stuNum'] = $list_arr[$m + 1];
                     $stu_list[$j]['name'] = $list_arr[$m + 2];
                     $stu_list[$j]['gender'] = $list_arr[$m + 3];
-                    $stu_list[$j]['calss'] = $list_arr[$m + 4];
+                    $stu_list[$j]['class'] = $list_arr[$m + 4];
                     $stu_list[$j]['major'] = $list_arr[$m + 5];
                     $stu_list[$j]['majorName'] = $list_arr[$m + 6];
                     $stu_list[$j]['academy'] = $list_arr[$m + 7];

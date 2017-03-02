@@ -103,7 +103,6 @@ class TeacherController extends Controller
                 $value['hash_day'] = intval($value['hash_day']);
                 $value['hash_lesson'] = intval($value['hash_lesson']);
                 $value['begin_lesson'] = intval($value['begin_lesson']);
-                $value['priod'] = intval($value['priod']);
             }
             $courseList = json_decode($courseList, true);
             $arr_courseList = array_values($courseList);
@@ -118,7 +117,6 @@ class TeacherController extends Controller
                 $value['hash_day'] = intval($value['hash_day']);
                 $value['hash_lesson'] = intval($value['hash_lesson']);
                 $value['begin_lesson'] = intval($value['begin_lesson']);
-                $value['priod'] = intval($value['priod']);
             }
             $arr_courseList = $courseList;
         }
@@ -208,7 +206,7 @@ class TeacherController extends Controller
                 'hash_lesson' => $info['hash_lesson'],
                 'major' => $value['major'],
                 'grade' => $value['grade'],
-                'class' => $value['class'],
+                'class' => $value['calss'],  //抓取数据临时更改如此
                 'scNum' => $res1['scNum'],
                 'status' => $data[$i]
             ];
