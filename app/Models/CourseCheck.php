@@ -10,12 +10,12 @@ class CourseCheck extends Model
 
     protected $primaryKey = 'ccid';
 
-    protected $fillable = ['stuNum', 'stuName', 'trid','jxbID', 'year', 'month','week', 'hash_day', 'hash_lesson',
+    protected $fillable = ['stuNum', 'stuName', 'trid','jxbID', 'course', 'year', 'month','week', 'hash_day', 'hash_lesson',
         'major', 'grade', 'class', 'scNum','status'];
 
     public function stuAttendance($user, $info)
     {
-        $need = ['week', 'hash_day', 'hash_lesson', 'status', 'jxbID'];
+        $need = ['week', 'hash_day', 'hash_lesson', 'status', 'jxbID', 'course'];
         $condition = [
                 'stuNum' => $user['stu_code'],
                 'year' => $info['year'],

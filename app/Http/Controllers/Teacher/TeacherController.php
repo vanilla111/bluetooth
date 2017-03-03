@@ -199,6 +199,7 @@ class TeacherController extends Controller
                 'stuName' => $value['name'],
                 'trid' => $user['trid'],
                 'jxbID' => $info['jxbID'],
+                'course' => $res1['course'],
                 'year' => $year,
                 'month' => $month,
                 'week' => $week,
