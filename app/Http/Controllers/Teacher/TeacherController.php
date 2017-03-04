@@ -169,7 +169,7 @@ class TeacherController extends Controller
             'hash_lesson' => $info['hash_lesson']
         ];
 
-        $res1 = TCourse::where($condition)->select(['tcid', 'scNum'])->first();
+        $res1 = TCourse::where($condition)->select(['tcid', 'scNum'， 'course'])->first();
         if (empty($res1['tcid']))
             return response()->json([
                 'status' => 404,
