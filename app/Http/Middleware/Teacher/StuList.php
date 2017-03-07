@@ -39,6 +39,9 @@ class StuList
                     'status' => 400,
                     'message' => 'grade为非负整数'
                 ], 400);
+            elseif ($info['grade'] == 'NaN') {
+                $info['grade'] = null;
+            }
         }
 
         if (!empty($info['scNum'])) {
@@ -47,6 +50,9 @@ class StuList
                     'status' => 400,
                     'message' => 'scNum为非负整数'
                 ], 400);
+            elseif ($info['scNum'] == 'undefined') {
+                $info['scNum'] = null;
+            }
         }
 
         if ($info['today'] != 'true')

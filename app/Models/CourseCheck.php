@@ -138,10 +138,11 @@ class CourseCheck extends Model
         }
 
         foreach ($res as $key => $value) {
-            $day = substr($value['created_at'], 8, 2);
-            if ($value['status'] = env('ABSENCE'))
+            $day = intval(substr($value['created_at'], 8, 2));
+            if ($value['status'] == env('ABSENCE'))
                 $count[$day]++;
         }
+
         return $count;
     }
 

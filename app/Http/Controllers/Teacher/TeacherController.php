@@ -25,16 +25,26 @@ class TeacherController extends Controller
     public function test(Request $request)
     {
         //
-        $res = SList::where(['jxbID' => 'A041611523783'])->select('stu_list')->first();
+        $res = SList::where(['jxbID' => 'A04162041830001'])->select('stu_list')->first();
         $stu_list = unserialize($res['stu_list']);
-        return response()->json($stu_list);
-//        $status = [];
-//        for ($i = 0; $i < count($stu_list); $i ++) {
-//            $status[$i] = random_int(1, 5);
-//        }
-//        return implode(',' , $status);
+        //return response()->json($stu_list);
+        $status = [];
+        for ($i = 0; $i < count($stu_list); $i ++) {
+            $status[$i] = random_int(1, 5);
+        }
+        return implode(',' , $status);
 
 
+    }
+
+    public function toLogin(Request $request)
+    {
+        return view('login');
+    }
+
+    public function index(Request $request)
+    {
+        return view('index');
     }
 
     /*登录*/
@@ -164,6 +174,7 @@ class TeacherController extends Controller
         $data = explode(',', $info['status']);
 
         $condition = [
+            'trid' => $user['trid'],
             'jxbID' => $info['jxbID'],
             'hash_day' => $info['hash_day'],
             'hash_lesson' => $info['hash_lesson']
@@ -301,6 +312,7 @@ class TeacherController extends Controller
             'trid' => $user['trid'],
             'week' => $week
         ];
+
         $need = ['hash_day', 'status'];
 
         if (!$res = CourseCheck::where($condition)->select($need)->get())

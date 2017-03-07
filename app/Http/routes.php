@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'Teacher\TeacherController@toLogin');
+Route::get('/login', 'Teacher\TeacherController@toLogin');
+Route::get('/index', 'Teacher\TeacherController@index');
 
 /*
 |--------------------------------------------------------------------------
