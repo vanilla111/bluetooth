@@ -196,47 +196,85 @@ window.onload = function () {
 		});
 	})
 
-	var page = 0;
+	var page = 1;
 	day = false;
 	month = false;
 	var course = "";
+	var search;
 
-	$.get(URL + "./api/teacher/web/stulist?" + token
-		+ "&page=" + page 
-		+ "&per_page=" + 20
-		+ "&grade=" + Number($("#grade")[0].textContent)
-		+ "&scNum=" + changeNum($("#scNum")[0].textContent)
-		+ "&today=" + day 
-		+ "&this_month=" + month 
-		+ "&status=" + 3 
-		, function(result){
-		if (result.status == 200) {
-			for(var i = 0; i < result.data.length ;i++) {
-				course = course + "<tr id = " + result.data[0].ccid + "><td>" + result.data[0].stuName + 
-				"</td><td><span class='pie'>" + result.data[0].class + 
-				"</span></td><td>" + result.data[0].stuNum + 
-				"</td><td>" + result.data[0].created_at + 
-				"</td><td><button id='4' type='button' class='btn btn-primary btn-xs'>迟到</button><button id='2' type='button' class='btn btn-primary btn-xs'>请假</button></td></tr>"
+	function getStu() {
+		course = "";
+		search = "";
+		if ($("#searchBox")[0].value) {
+			if (isNaN($("#searchBox")[0].value) == true) {
+				search = "&stuName=" + $("#searchBox")[0].value;
+			} else if (isNaN($("#searchBox")[0].value) == false) {
+				search = "&stuNum=" + $("#searchBox")[0].value;
+			} else {
+				search = "";
 			}
-			$(course).appendTo("tbody");
 		}
-		
-	});
+		$.get(URL + "./api/teacher/web/stulist?" + token
+			+ "&page=" + page 
+			+ "&per_page=" + 20 
+			+ search
+			+ "&grade=" + Number($("#grade")[0].textContent)
+			+ "&scNum=" + changeNum($("#scNum")[0].textContent)
+			+ "&today=" + day 
+			+ "&this_month=" + month 
+			+ "&status=" + 3 
+			, function(result){
+			if (result.status == 200) {
+				if(result.data.data.length == 0) {
+					alert("没有了");
+				}
+				console.log(result.data.data);
+				for(var i = 0; i < result.data.data.length ;i++) {
+					course = course + "<tr id = " + result.data.data[i].ccid + "><td>" + result.data.data[i].stuName + 
+					"</td><td><span class='pie'>" + result.data.data[i].class + 
+					"</span></td><td>" + result.data.data[i].stuNum + 
+					"</td><td>" + result.data.data[i].created_at + 
+					"</td><td><button id='4' type='button' class='btn btn-primary btn-xs'>迟到</button><button id='2' type='button' class='btn btn-primary btn-xs'>请假</button></td></tr>"
+				}
+				$("tbody")[0].innerHTML = course;
+				console.log(course);
+				$("tr").click(function(e) {
+					if (e.currentTarget.id && e.target.id) {
+						$.ajax({
+							url: URL + "./api/teacher/web/stu?" + token
+								+ "&ccid=" + e.currentTarget.id 
+								+ "&status=" + e.target.id ,
+							type: 'PUT',
+							success: function(response) {
+								$("#"+e.currentTarget.id)[0].innerHTML = "";
+							}
+						});
+					}
+				})
+			}
+		});
+	};
+
+	getStu();
 
 	$("#day").click(function () {	
 		day = true;
 		month = false;
+		getStu();
 	})
 	$("#week").click(function () {
 		day = false;
 		month = false;
+		getStu();
 	})
 	$("#month").click(function () {
-		day = true;
+		day = false;
 		month = true;
+		getStu();
 	})
 
-	$("#more").click(function () {
+	$("#more").click(function (e) {
+		course = "";
 		page++;
 		$.get(URL + "./api/teacher/web/stulist?" + token
 			+ "&page=" + page 
@@ -248,58 +286,70 @@ window.onload = function () {
 			+ "&status=" + 3 
 			, function(result){
 			if (result.status == 200) {
-				alert("没有了");
-				for(var i = 0; i < result.data.length ;i++) {
-					ccourse = course + "<tr id = " + result.data[0].ccid + "><td>" + result.data[0].stuName + 
-					"</td><td><span class='pie'>" + result.data[0].class + 
-					"</span></td><td>" + result.data[0].stuNum + 
-					"</td><td>" + result.data[0].created_at + 
+				console.log(result);
+				if(result.data.data.length == 0) {
+					alert("没有了");
+					page --;
+				}
+				for(var i = 0; i < result.data.data.length ;i++) {
+					console.log(result.data.data[i]);
+					course = course + "<tr id = " + result.data.data[i].ccid + "><td>" + result.data.data[i].stuName + 
+					"</td><td><span class='pie'>" + result.data.data[i].class + 
+					"</span></td><td>" + result.data.data[i].stuNum + 
+					"</td><td>" + result.data.data[i].created_at + 
 					"</td><td><button id='4' type='button' class='btn btn-primary btn-xs'>迟到</button><button id='2' type='button' class='btn btn-primary btn-xs'>请假</button></td></tr>"
 				}
+				console.log(course);
 				$(course).appendTo("tbody");
+				$("tr").click(function(e) {
+					if (e.currentTarget.id && e.target.id) {
+						$.ajax({
+							url: URL + "/api/teacher/web/stu?" + token 
+								+ "&ccid=" + e.currentTarget.id 
+								+ "&status=" + e.target.id ,
+							type: 'PUT',
+							success: function(response) {
+								$("#"+e.currentTarget.id)[0].innerHTML = "";
+							}
+						});
+					}
+				})
 			}
 			
 		});
 	})
 
-	$("#search").click(function () {
-		$.get(URL + "./api/teacher/web/stulist?" + token
-			+ "&page=" + page 
-			+ "&per_page=" + 20 
-			+ "&grade=" + Number($("#grade")[0].textContent)
-			+ "&scNum=" + changeNum($("#scNum")[0].textContent)
-			+ "&today=" + day 
-			+ "&this_month=" + month 
-			+ "&status=" + 3 
-			, function(result){
-			if (result.status == 200) {
-				if(result.total == 0) {
-					alert("没有了");
-				}
-				for(var i = 0; i < result.data.length ;i++) {
-					course = course + "<tr id = " + result.data[0].ccid + "><td>" + result.data[0].stuName + 
-					"</td><td><span class='pie'>" + result.data[0].class + 
-					"</span></td><td>" + result.data[0].stuNum + 
-					"</td><td>" + result.data[0].created_at + 
-					"</td><td><button id='4' type='button' class='btn btn-primary btn-xs'>迟到</button><button id='2' type='button' class='btn btn-primary btn-xs'>请假</button></td></tr>"
-				}
-				$(course).appendTo("tbody");
-			}
-		});
+	$("#search").click(function (e) {
+		getStu();
 	})
 
-	$("tr").click(function(e) {
-		if (e.currentTarget.id && e.target.id) {
-			$.ajax({
-				url: URL + "./api/teacher/web/stulist?" + token
-					+ "&ccid=" + e.currentTarget.id 
-					+ "&status=" + e.target.id ,
-				type: 'PUT',
-				success: function(response) {
-					$("#"+e.currentTarget.id)[0].innerHTML = "";
-				}
-			});
-		}
+	$("#ok-list").click(function (e) {
+		console.log(e);
+		getStu();
 	})
+
+	$("#out").click(function(e) {
+		search = "";
+		if ($("#searchBox")[0].value) {
+			if (isNaN($("#searchBox")[0].value) == true) {
+				search = "&stuName=" + $("#searchBox")[0].value;
+			} else if (isNaN($("#searchBox")[0].value) == false) {
+				search = "&stuNum=" + $("#searchBox")[0].value;
+			} else {
+				search = "";
+			}
+		}
+		var url = URL + "./api/teacher/web/stulist/excel?" + token
+			+ "&page=" + page
+			+ "&per_page=" + 20
+			+ search
+			+ "&grade=" + Number($("#grade")[0].textContent)
+			+ "&scNum=" + changeNum($("#scNum")[0].textContent)
+			+ "&today=" + day
+			+ "&this_month=" + month
+			+ "&status=" + 3 ;
+		window.location = url;
+	})
+
 
 }

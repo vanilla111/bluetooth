@@ -42,7 +42,8 @@ Route::group(['middleware' => ['web'], 'prefix' => 'api'], function () {
                 Route::get('/weekstatistics', 'TeacherController@getWeekStatistics')->middleware('tea.statistics');
                 Route::get('/monthstatistics', 'TeacherController@getMonthStatistics');
                 Route::get('/stulist', 'TeacherController@getStuList')->middleware('tea.stu.list');
-                Route::put('stu', 'TeacherController@setStuStatus');
+                Route::get('/stulist/excel', 'TeacherController@getStuListExcel')->middleware('tea.stu.list');
+                Route::put('/stu', 'TeacherController@setStuStatus');
             });
         });
     });

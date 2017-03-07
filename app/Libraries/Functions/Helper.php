@@ -53,3 +53,29 @@ if (! function_exists('getNowWeek')) {
         return $now_week - $start_week;
     }
 }
+
+if (! function_exists('getExcelArray')) {
+    function getExcelArray($data = [], $need = [], $status = [])
+    {
+        $excel_array = [];
+        $column_key = [];
+        foreach ($need as $k => $v) {
+            array_push($column_key, $v);
+        }
+        array_push($excel_array, $column_key);
+
+        for ($i = 0; $i < count($data); $i++) {
+            $column_value = [];
+            foreach ($data[$i]->toArray() as $k1 => $v1) {
+                if (isset($need[$k1])) {
+                    if ($k1 == 'status')
+                        $v1 = $status[$v1];
+                    array_push($column_value, $v1);
+                }
+            }
+            array_push($excel_array, $column_value);
+        }
+
+        return $excel_array;
+    }
+}

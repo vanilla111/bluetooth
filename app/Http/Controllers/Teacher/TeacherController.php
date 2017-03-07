@@ -15,6 +15,7 @@ use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TeacherController extends Controller
 {
@@ -402,7 +403,6 @@ class TeacherController extends Controller
             return response()->json([
                 'status' => 400,
                 'message' => 'failed',
-                'data' => NULL
             ], 400);
 
         return response()->json([
@@ -412,13 +412,52 @@ class TeacherController extends Controller
         ], 200);
     }
 
+    public function getStuListExcel(Request $request)
+    {
+        $user = $request->get('user');
+        $info = $request->get('info');
+        $info['per_page'] = 9999;
+
+        $course_check_m = new CourseCheck();
+        $res = $course_check_m->getStuList($info, $user['trid']);
+
+        if (!$res)
+            return response()->json([
+                'status' => 400,
+                'message' => 'failed',
+                'data' => NULL
+            ], 400);
+
+        $need = [
+            'stuNum' => '学号',
+            'stuName' => '姓名',
+            'class' => '班级',
+            'status' => '考勤状态',
+            'created_at' => '考勤时间'
+        ];
+        $status = [
+            env('SIGN') => '正常',
+            env('LEAVE') => '请假',
+            env('ABSENCE') => '旷到',
+            env('LATE') => '迟到',
+            env('LEAVE_EARLY') => '早退',
+        ];
+        $cellData = getExcelArray($res, $need, $status);
+
+        return Excel::create('考勤信息',function($excel) use ($cellData){
+                    $excel->sheet('attendance', function($sheet) use ($cellData){
+                    $sheet->rows($cellData);
+                    });
+                })->export('xls');
+    }
+
     public function setStuStatus(Request $request)
     {
         $need = ['ccid', 'status'];
         $user = $request->get('user');
         $info = $request->only($need);
 
-        if (!is_int($info['status']))
+        if (!is_numeric($info['status']))
             return response()->json([
                 'status' => 400,
                 'message' => 'failed'

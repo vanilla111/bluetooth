@@ -29,12 +29,12 @@
                     <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
                         <i class="fa fa-reorder"></i>
                     </button>
-                    <a href="index.html#" class="navbar-brand">Bluetoor</a>
+                    <a href="./index#" class="navbar-brand">Bluetoor</a>
                 </div>
                 <div class="navbar-collapse collapse" id="navbar">
                     <ul class="nav navbar-top-links navbar-right">
                         <li>
-                            <a href="login.html">
+                            <a href="./login">
                                 <i class="fa fa-sign-out"></i> 退出
                             </a>
                         </li>
@@ -188,23 +188,26 @@
                                         </button>
                                         <ul id="scNum-list" class="dropdown-menu courseList"></ul>
                                     </div>
+                                    <div class="btn-group">
+                                        <button id="ok-list" data-toggle="dropdown" class="btn btn-primary btn-xs dropdown-toggle">确定</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="ibox-content">
                                 <div class="row">
                                     <div class="col-sm-9 m-b-xs">
                                         <div data-toggle="buttons" class="btn-group">
-                                            <label class="btn btn-sm btn-white">
-                                            <input type="radio" id="day" name="options">天</label>
-                                            <label class="btn btn-sm btn-white active">
-                                            <input type="radio" id="week" name="options">周</label>
-                                            <label class="btn btn-sm btn-white">
-                                            <input type="radio" id="month" name="options">月</label>
+                                            <label id="day" class="btn btn-sm btn-white">
+                                            <input type="radio" name="options">天</label>
+                                            <label id="week" class="btn btn-sm btn-white active">
+                                            <input type="radio" name="options">周</label>
+                                            <label id="month" class="btn btn-sm btn-white">
+                                            <input type="radio" name="options">月</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
                                         <div class="input-group">
-                                            <input type="text" placeholder="搜索" class="input-sm form-control"> <span class="input-group-btn">
+                                            <input id= "searchBox" type="text" placeholder="搜索" class="input-sm form-control"> <span class="input-group-btn">
                                             <button id="search" type="button" class="btn btn-sm btn-primary">搜索</button> </span>
                                         </div>
                                     </div>
@@ -224,6 +227,7 @@
                                     </table>
                                 </div>
                                 <button id="more" type="button" style="margin: 0 auto; display:block;" class="btn btn-primary btn-s">更多</button>
+                                <button id="out" type="button" style="margin: 20px auto; display:block;" class="btn btn-primary btn-s">导出excal</button>
                             </div>
                         </div>
                     </div>

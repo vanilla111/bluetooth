@@ -148,7 +148,7 @@ class CourseCheck extends Model
 
     public function getStuList($info, $trid)
     {
-        $need = ['ccid', 'stuNum', 'stuName', 'hash_day','class', 'created_at'];
+        $need = ['ccid', 'stuNum', 'stuName', 'hash_day','class', 'status', 'created_at'];
         $condition = [
             'trid' => $trid,
             'year' => $info['year'],
