@@ -41,6 +41,7 @@ Route::group(['middleware' => ['web'], 'prefix' => 'api'], function () {
                 Route::get('/statistics', 'TeacherController@getStatistics');
                 Route::get('/weekstatistics', 'TeacherController@getWeekStatistics')->middleware('tea.statistics');
                 Route::get('/monthstatistics', 'TeacherController@getMonthStatistics');
+                Route::get('/termstatistics', 'TeacherController@getTermStatistics')->middleware('tea.statistics');
                 Route::get('/stulist', 'TeacherController@getStuList')->middleware('tea.stu.list');
                 Route::get('/stulist/excel', 'TeacherController@getStuListExcel')->middleware('tea.stu.list');
                 Route::put('/stu', 'TeacherController@setStuStatus');

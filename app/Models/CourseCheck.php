@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\TCourse;
 
 class CourseCheck extends Model
 {
@@ -144,6 +145,82 @@ class CourseCheck extends Model
         }
 
         return $count;
+    }
+
+    public function getTermStatistics($info, $trid)
+    {
+        //先获取课程表中所有的该教师的课程
+        $condition = [
+            'year' => $info['year'],
+            'trid' => $trid,
+            'scNum' => $info['scNum'],
+            'grade' => $info['grade'],
+            'jxbID' => $info['jxbID']
+        ];
+        $course_need = ['hash_day', 'hash_lesson'];
+
+        //清除无用信息
+        foreach ($info as $key => $value) {
+            if ($value == 0)
+                unset($condition[$key]);
+        }
+
+        //
+        $course_condition = $condition;
+        if (isset($condition['grade'])) {
+            unset($course_condition['grade']);
+        }
+
+        if (!$course_res = TCourse::where($course_condition)->select($course_need)->get())
+            return false;
+
+        //获取所有考勤信息
+        $check_need = ['jxbID', 'week', 'hash_day', 'hash_lesson', 'status'];
+        if (!$check_res = $this->where($condition)->select($check_need)->get())
+            return false;
+
+//        //制作这学期所有课程的数组
+//        $week_num = getAllWeek();
+//        $statistics_arr = [];
+//        foreach ($check_res as $key => $value) {
+//            $new_key = $value['jxbID'] . '.' . $value['hash_day'] . '.' . $value['hash_lesson'];
+//            $statistics_arr[$new_key]  = [];
+//            for ($i = 0; $i < $week_num; $i++) {
+//                $statistics_arr[$new_key][$i] = 0;
+//            }
+//        }
+//
+//        //统计人数
+//        $absence_enum = env('ABSENCE');
+//        foreach ($check_res as $k1 => $v1) {
+//            if ($v1['status'] == $absence_enum) {
+//                $temp_key = $v1['jxbID'] . '.' . $v1['hash_day'] . '.' . $v1['hash_lesson'];
+//                $statistics_arr[$temp_key][($v1['week'] - 1)]++;
+//            }
+//        }
+
+        //制作这学期所有课程的数组
+        $week_num = getAllWeek();
+        $statistics_arr = [];
+        foreach ($check_res as $key => $value) {
+            $new_key = $value['jxbID'];
+            $statistics_arr[$new_key]  = [];
+            for ($i = 0; $i < $week_num; $i++) {
+                $statistics_arr[$new_key][$i] = 0;
+            }
+        }
+
+        //统计人数
+        $absence_enum = env('ABSENCE');
+        foreach ($check_res as $k1 => $v1) {
+            if ($v1['status'] == $absence_enum) {
+                $temp_key = $v1['jxbID'];
+                $statistics_arr[$temp_key][($v1['week'] - 1)]++;
+            }
+        }
+
+        return $statistics_arr;
+
     }
 
     public function getStuList($info, $trid)

@@ -26,14 +26,23 @@ class TeacherController extends Controller
     public function test(Request $request)
     {
         //
-        $res = SList::where(['jxbID' => 'A04162041830001'])->select('stu_list')->first();
-        $stu_list = unserialize($res['stu_list']);
-        //return response()->json($stu_list);
-        $status = [];
-        for ($i = 0; $i < count($stu_list); $i ++) {
-            $status[$i] = random_int(1, 5);
+//        $res = SList::where(['jxbID' => 'A04162041830001'])->select('stu_list')->first();
+//        $stu_list = unserialize($res['stu_list']);
+//        //return response()->json($stu_list);
+//        $status = [];
+//        for ($i = 0; $i < count($stu_list); $i ++) {
+//            $status[$i] = random_int(1, 5);
+//        }
+//        return implode(',' , $status);
+        $start = 6972;
+        $end = 12652;
+        for ($i = $start; $i <= $end; $i++) {
+            $res = TCourse::where('tcid', $i)->select('scNum')->first();
+            $data = [
+                'scNum' => trim($res['scNum'])
+            ];
+            $res = TCourse::where('tcid', $i)->update($data);
         }
-        return implode(',' , $status);
 
 
     }
@@ -87,7 +96,6 @@ class TeacherController extends Controller
             return response()->json([
                 'status' => 403,
                 'message' => 'failed',
-                'data' => NULL,
             ], 403);
         }
 
@@ -291,7 +299,9 @@ class TeacherController extends Controller
         //简化课程信息，将不同的课程编号与之对应的课程名字返回
         $res = [];
         foreach ($courseList as $key => $value) {
-            $res[$value['scNum']] = $value['course'];
+            $res[$value['scNum']]['course'] = $value['course'];
+            $res[$value['scNum']]['jxbID'] = [];
+            array_push($res[$value['scNum']]['jxbID'], $value['jxbID']);
         }
 
         return response()->json([
@@ -379,6 +389,25 @@ class TeacherController extends Controller
 
         $course_check_m = new CourseCheck();
         if (!$res = $course_check_m->getMonthStatistics($month, $user['trid']))
+            return response()->json([
+                'status' => 400,
+                'message' => 'failed'
+            ], 400);
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'success',
+            'data' => $res
+        ], 200);
+    }
+
+    public function getTermStatistics(Request $request)
+    {
+        $user = $request->get('user');
+        $info = $request->get('info');
+
+        $course_check_m = new CourseCheck();
+        if (!$res = $course_check_m->getTermStatistics($info, $user['trid']))
             return response()->json([
                 'status' => 400,
                 'message' => 'failed'

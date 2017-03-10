@@ -54,6 +54,18 @@ if (! function_exists('getNowWeek')) {
     }
 }
 
+if (! function_exists('getAllWeek')) {
+    function getAllWeek()
+    {
+        $term_start = strtotime(env('TERM_START'));
+        $term_end = strtotime(env('TERM_END'));
+
+        $week_num = date("W", $term_end) - date("W", $term_start);
+
+        return $week_num + 1;
+    }
+}
+
 if (! function_exists('getExcelArray')) {
     function getExcelArray($data = [], $need = [], $status = [])
     {

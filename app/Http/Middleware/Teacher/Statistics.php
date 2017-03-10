@@ -15,7 +15,7 @@ class Statistics
      */
     public function handle($request, Closure $next)
     {
-        $allow = ['major', 'grade', 'scNum'];
+        $allow = ['major', 'grade', 'scNum', 'jxbID'];
         $info = $request->only($allow);
 
         if (!empty($info['major'])) {
@@ -44,6 +44,9 @@ class Statistics
                 ], 400);
         } else
             $info['scNum'] = 0;
+
+        if (empty($info['jxbID']))
+            $info['jxbID'] = 0;
 
         $info['year'] = getCourseYear();
         $info['week'] = getNowWeek();
