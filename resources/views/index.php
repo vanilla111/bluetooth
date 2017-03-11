@@ -13,11 +13,6 @@
     <link href="font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css?v=2.2.0" rel="stylesheet">
-    <style>
-        .table .btn {
-            margin-left: 5px;
-        }
-    </style>
 </head>
 
 <body class="top-navigation">
@@ -94,7 +89,7 @@
                             <div class="ibox-title">
                                 <h5>月签到状况</h5>
                                 <div class="ibox-tools">
-                                    <span class="label label-primary">2017.02 更新</span>
+                                    <span class="label label-primary"><span id="time"></span> 更新</span>
                                 </div>
                             </div>
                             <div class="ibox-content no-padding">
@@ -136,7 +131,7 @@
                                         </div>
                                     </div>
                                     <h3 class="font-bold no-margins">
-                                        一周旷到率
+                                        本学期旷到情况
                                     </h3>
                                 </div>
 
@@ -155,7 +150,7 @@
                                 <div class="m-t-md">
                                     <small class="pull-right">
                                         <i class="fa fa-clock-o"> </i>
-                                        2017.02.30更新
+                                        <span id="time2"></span>更新
                                     </small>
                                 </div>
 
