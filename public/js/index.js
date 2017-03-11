@@ -109,13 +109,14 @@ window.onload = function () {
 	changeTag("scNum-m","scNum-m-list");
 	changeTag("grade","grade-list");
 	changeTag("scNum","scNum-list");
+	changeTag("weekSearch","weekSearch-list");
 
 
 
 	var myChart = echarts.init(document.getElementById('lineChart'));
 
 	$("#ok-m").click(function () {
-		$.get(URL + "./api/teacher/web/termstatistics?" + token
+		$.get(URL + "./api/teacher/web/termstatistics?" + token 
 			+ "&grade=" + Number($("#grade-m")[0].textContent)
 			+ "&scNum=" + changeNum($("#scNum-m")[0].textContent)
 			, function(result){
@@ -126,12 +127,12 @@ window.onload = function () {
 					var course = {
 						areaStyle: {normal: {}},
 					};
-					course.name = "教学班:" + key;
+					course.name = "教学班" + key + "旷到人数";
 					course.type = "line";
 					course.stack = "总人数";
 					course.data = result.data[key];
 					seriesData.push(course);
-					jxb.push("教学班:" + key);
+					jxb.push("教学班" + key + "旷到人数");
 				}
 
 				var option = {
@@ -194,10 +195,11 @@ window.onload = function () {
 				search = "";
 			}
 		}
-		$.get(URL + "./api/teacher/web/stulist?" + token
+		$.get(URL + "./api/teacher/web/stulist?" + token 
 			+ "&page=" + page 
 			+ "&per_page=" + 20 
-			+ search
+			+ search 
+			+ "&week=" + (isNaN(Number($("#weekSearch")[0].textContent))?1:Number($("#weekSearch")[0].textContent))
 			+ "&grade=" + Number($("#grade")[0].textContent)
 			+ "&scNum=" + changeNum($("#scNum")[0].textContent)
 			+ "&today=" + day 
@@ -219,7 +221,7 @@ window.onload = function () {
 				$("tr").click(function(e) {
 					if (e.currentTarget.id && e.target.id) {
 						$.ajax({
-							url: URL + "./api/teacher/web/stu?" + token
+							url: URL + "./api/teacher/web/stu?" + token 
 								+ "&ccid=" + e.currentTarget.id 
 								+ "&status=" + e.target.id ,
 							type: 'PUT',
@@ -245,7 +247,7 @@ window.onload = function () {
 		getStu();
 	})
 	$("#month").click(function () {
-		day = false;
+		day = true;
 		month = true;
 		getStu();
 	})
@@ -253,9 +255,10 @@ window.onload = function () {
 	$("#more").click(function (e) {
 		course = "";
 		page++;
-		$.get(URL + "./api/teacher/web/stulist?" + token
+		$.get(URL + "./api/teacher/web/stulist?" + token 
 			+ "&page=" + page 
 			+ "&per_page=" + 20 
+			+ "&week=" + (isNaN(Number($("#weekSearch")[0].textContent))?1:Number($("#weekSearch")[0].textContent))
 			+ "&grade=" + Number($("#grade")[0].textContent)
 			+ "&scNum=" + changeNum($("#scNum")[0].textContent)
 			+ "&today=" + day 
@@ -278,7 +281,7 @@ window.onload = function () {
 				$("tr").click(function(e) {
 					if (e.currentTarget.id && e.target.id) {
 						$.ajax({
-							url: URL + "./api/teacher/web/stu?" + token
+							url: URL + "./api/teacher/web/stu?" + token 
 								+ "&ccid=" + e.currentTarget.id 
 								+ "&status=" + e.target.id ,
 							type: 'PUT',
@@ -312,7 +315,7 @@ window.onload = function () {
 				search = "";
 			}
 		}
-		var url = URL + "./api/teacher/web/stulist/excel?" + token
+		var url = URL + "./api/teacher/web/stulist/excel?" + token 
 			+ "&page=" + page 
 			+ "&per_page=" + 20 
 			+ search

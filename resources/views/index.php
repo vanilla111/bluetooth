@@ -184,6 +184,31 @@
                                         <ul id="scNum-list" class="dropdown-menu courseList"></ul>
                                     </div>
                                     <div class="btn-group">
+                                        <button id="weekSearch" data-toggle="dropdown" class="btn btn-primary btn-xs dropdown-toggle">周数 <span class="caret"></span>
+                                        </button>
+                                        <ul id="weekSearch-list" class="dropdown-menu">
+                                            <li><a>1</a></li>
+                                            <li><a>2</a></li>
+                                            <li><a>3</a></li>
+                                            <li><a>4</a></li>
+                                            <li><a>5</a></li>
+                                            <li><a>6</a></li>
+                                            <li><a>7</a></li>
+                                            <li><a>8</a></li>
+                                            <li><a>9</a></li>
+                                            <li><a>10</a></li>
+                                            <li><a>11</a></li>
+                                            <li><a>12</a></li>
+                                            <li><a>13</a></li>
+                                            <li><a>14</a></li>
+                                            <li><a>15</a></li>
+                                            <li><a>16</a></li>
+                                            <li><a>17</a></li>
+                                            <li><a>18</a></li>
+                                            <li><a>19</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="btn-group">
                                         <button id="ok-list" data-toggle="dropdown" class="btn btn-primary btn-xs dropdown-toggle">确定</button>
                                     </div>
                                 </div>
