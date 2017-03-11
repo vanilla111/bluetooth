@@ -55,6 +55,12 @@ class StuList
             }
         }
 
+        if (!empty($info['week'])) {
+            if ($info['week'] <= 0 ) {
+                $info['week'] = getNowWeek();
+            }
+        }
+
         if ($info['today'] != 'true')
             $info['today'] = false;
 
@@ -62,7 +68,6 @@ class StuList
             $info['this_month'] = false;
 
         $info['year'] = getCourseYear();
-        $info['week'] = getNowWeek();
         //return response()->json($info);
 
         $request->attributes->add(compact('info'));
