@@ -318,12 +318,13 @@ window.onload = function () {
 		var url = URL + "./api/teacher/web/stulist/excel?" + token 
 			+ "&page=" + page 
 			+ "&per_page=" + 20 
-			+ search
+			+ search 
+			+ "&week=" + (isNaN(Number($("#weekSearch")[0].textContent))?1:Number($("#weekSearch")[0].textContent))
 			+ "&grade=" + Number($("#grade")[0].textContent)
 			+ "&scNum=" + changeNum($("#scNum")[0].textContent)
 			+ "&today=" + day 
 			+ "&this_month=" + month 
-			+ "&status=" + 3 ;
+			+ "&status=" + 2 
 		window.location = url; 
 	})
 
