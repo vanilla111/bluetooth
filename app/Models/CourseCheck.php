@@ -157,7 +157,7 @@ class CourseCheck extends Model
             'grade' => $info['grade'],
             'jxbID' => $info['jxbID']
         ];
-        $course_need = ['hash_day', 'hash_lesson'];
+        $course_need = ['jxbID', 'hash_day', 'hash_lesson', 'week'];
 
         //清除无用信息
         foreach ($info as $key => $value) {
@@ -179,6 +179,28 @@ class CourseCheck extends Model
         if (!$check_res = $this->where($condition)->select($check_need)->get())
             return false;
 
+        //制作这学期所有课程的数组
+        $statistics_arr = [];
+        foreach ($course_res as $key => $value) {
+            $week_str = $value['week'];
+            $week_arr = explode(',', $week_str);
+            //$statistics_arr[$value['jxbID']] = [];
+            foreach ($week_arr as $k => $v) {
+                $temp_key = $v . $value['hash_day'] . $value['hash_lesson'];
+                $statistics_arr[$value['jxbID']][$temp_key] = 0;
+            }
+        }
+
+        //统计人数
+        $absence_enum = env('ABSENCE');
+        foreach ($check_res as $k1 => $v1) {
+            if ($v1['status'] == $absence_enum) {
+                $temp_key = $v1['week'] . $v1['hash_day'] . $v1['hash_lesson'];
+                if(array_key_exists($v1['jxbID'], $statistics_arr))
+                    $statistics_arr[$v1['jxbID']][$temp_key]++;
+            }
+        }
+
 //        //制作这学期所有课程的数组
 //        $week_num = getAllWeek();
 //        $statistics_arr = [];
@@ -199,25 +221,25 @@ class CourseCheck extends Model
 //            }
 //        }
 
-        //制作这学期所有课程的数组
-        $week_num = getAllWeek();
-        $statistics_arr = [];
-        foreach ($check_res as $key => $value) {
-            $new_key = $value['jxbID'];
-            $statistics_arr[$new_key]  = [];
-            for ($i = 0; $i < $week_num; $i++) {
-                $statistics_arr[$new_key][$i] = 0;
-            }
-        }
-
-        //统计人数
-        $absence_enum = env('ABSENCE');
-        foreach ($check_res as $k1 => $v1) {
-            if ($v1['status'] == $absence_enum) {
-                $temp_key = $v1['jxbID'];
-                $statistics_arr[$temp_key][($v1['week'] - 1)]++;
-            }
-        }
+//        //制作这学期所有课程的数组
+//        $week_num = getAllWeek();
+//        $statistics_arr = [];
+//        foreach ($check_res as $key => $value) {
+//            $new_key = $value['jxbID'];
+//            $statistics_arr[$new_key]  = [];
+//            for ($i = 0; $i < $week_num; $i++) {
+//                $statistics_arr[$new_key][$i] = 0;
+//            }
+//        }
+//
+//        //统计人数
+//        $absence_enum = env('ABSENCE');
+//        foreach ($check_res as $k1 => $v1) {
+//            if ($v1['status'] == $absence_enum) {
+//                $temp_key = $v1['jxbID'];
+//                $statistics_arr[$temp_key][($v1['week'] - 1)]++;
+//            }
+//        }
 
         return $statistics_arr;
 
