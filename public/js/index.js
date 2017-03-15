@@ -273,7 +273,7 @@ window.onload = function () {
 		getStu();
 	})
 	$("#month").click(function () {
-		day = true;
+		day = false;
 		month = true;
 		getStu();
 	})
