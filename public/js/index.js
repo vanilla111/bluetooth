@@ -9,6 +9,7 @@ window.onload = function () {
 	var courseList;
 	var scNum = [];
 	var scName =[];
+
 	$.get(URL + "./api/teacher/web/courselist?" + token, function(result){
 		if (result.status == 200) {
 			courseList = result.data;
@@ -112,8 +113,15 @@ window.onload = function () {
 	changeTag("weekSearch","weekSearch-list");
 
 
+	function objLength(obj) {
+		var length = 0;
+		for(i in obj) {
+			length++;
+		}
+		return length;
+	}
 
-	var myChart = echarts.init(document.getElementById('lineChart'));
+
 
 	$("#ok-m").click(function () {
 		$.get(URL + "./api/teacher/web/termstatistics?" + token 
@@ -123,6 +131,15 @@ window.onload = function () {
 		if (result.status == 200) {
 				var seriesData= [];
 				var jxb = [];
+				var xData = [];
+				var max = 0;
+				var myChart = echarts.init(document.getElementById('lineChart'));
+				for(key in result.data) {
+					if (objLength(result.data[key]) > max ) {
+						max = objLength(result.data[key])
+					}
+				}
+
 				for(key in result.data) {
 					var course = {
 						areaStyle: {normal: {}},
@@ -130,11 +147,22 @@ window.onload = function () {
 					course.name = "教学班" + key + "旷到人数";
 					course.type = "line";
 					course.stack = "总人数";
-					course.data = result.data[key];
+					course.data = [];
+					if (objLength(result.data[key]) < max) {
+						for(var i = objLength(result.data[key]); i< max ; i++ ) {
+							result.data[key][i*1000] = 0;
+						}
+					}
+					for(i in result.data[key]) {
+						course.data.push(result.data[key][i]);
+					}
 					seriesData.push(course);
 					jxb.push("教学班" + key + "旷到人数");
 				}
 
+				for(var i = 0; i < max ; i ++) {
+					xData.push("第" + (i+1) + "节课");
+				}
 				var option = {
 					tooltip : {
 						trigger: 'axis'
@@ -160,7 +188,7 @@ window.onload = function () {
 					{
 						type : 'category',
 						boundaryGap : false,
-						data : ['第1周','第2周','第3周','第4周','第5课','第6周','第7周','第8周','第9周','第10周','第11周','第12周','第13周','第14周','第15周','第16周','第17周','第18周','第19周']
+						data : xData
 					}
 					],
 					yAxis : [
@@ -170,9 +198,7 @@ window.onload = function () {
 					],
 					series : seriesData
 				};
-
 				myChart.setOption(option);
-
 			}
 		});
 	})
