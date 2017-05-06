@@ -19,9 +19,9 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class TeacherController extends Controller
 {
-        use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
-        protected $guard = 'teachers';
+    protected $guard = 'teachers';
 
     public function test(Request $request)
     {

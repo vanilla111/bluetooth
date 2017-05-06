@@ -54,6 +54,11 @@ return [
         'teachers' => [
             'driver'   => 'jwt',   // 结合扩展这里定义即生效
             'provider' => 'teachers'
+        ],
+
+        'zhihu_user' => [
+            'driver' => 'jwt',
+            'provider' => 'zhihu_user'
         ]
     ],
 
@@ -88,6 +93,11 @@ return [
         'teachers' => [
             'driver' => 'eloquent',
             'model' => App\Models\Teacher::class
+        ],
+
+        'zhihu_user' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\zhihu\User::class
         ]
 
         // 'users' => [

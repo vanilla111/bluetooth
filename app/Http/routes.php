@@ -56,7 +56,27 @@ Route::group(['middleware' => ['web'], 'prefix' => 'api'], function () {
             Route::get('/attendance', 'StudentController@getAttendance')->middleware('stu.attendance');//获取学生本人的考勤信息
         });
     });
+
+    //为了应付而写
+    Route::group(['prefix' => 'zhihu', 'namespace' => 'Zhihu'], function() {
+        Route::post('/register', 'UserController@toRegister');
+        Route::post('/login', 'UserController@toLogin');
+        Route::group(['middleware' => ['zhihu.verify']], function () {
+            Route::post('/modifyAvatar', 'UserController@modifyAvatar');
+            Route::post('/changePassword', 'UserController@changePassword');
+            Route::post('/getQuestionList', 'QuestionController@getQuestionList');
+            Route::post('/getAnswerList', 'AnswerController@getAnswerList');
+            Route::post('/question', 'QuestionController@question');
+            Route::post('/answer', 'AnswerController@answer');
+            Route::post('/favorite', 'FavoriteController@favorite');
+            Route::post('/cancelFavorite', 'FavoriteController@cancelFavorite');
+            Route::post('/getFavoriteList', 'FavoriteController@getFavoriteList');
+            Route::post('/accept', 'QuestionController@accept');
+        });
+    });
 });
+
+
 
 
 //Route::get('/spider/teacher/list', 'Spider\TeacherController@getList');

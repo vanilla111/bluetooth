@@ -53,6 +53,12 @@ class Kernel extends HttpKernel
         'stu.attendance' => \App\Http\Middleware\Student\Attendance::class,
         'tea.attendance' => \App\Http\Middleware\Teacher\Attendance::class,
         'tea.statistics' => \App\Http\Middleware\Teacher\Statistics::class,
-        'tea.stu.list' => \App\Http\Middleware\Teacher\StuList::class
+        'tea.stu.list' => \App\Http\Middleware\Teacher\StuList::class,
+
+        'zhihu.user' => \App\Http\Middleware\Zhihu\User::class,
+        'zhihu.question' => \App\Http\Middleware\Zhihu\Question::class,
+        'zhihu.answer' => \App\Http\Middleware\Zhihu\Answer::class,
+        'zhihu.favorite' => \App\Http\Middleware\Zhihu\Favorite::class,
+        'zhihu.verify' => \App\Http\Middleware\Zhihu\VerifyAuth::class,
     ];
 }
