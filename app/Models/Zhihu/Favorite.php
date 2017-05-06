@@ -10,5 +10,5 @@ class Favorite extends Model
 
     protected $primaryKey = 'id';
 
-    protected $fillable = ['uid', 'qid'];
+    protected $fillable = ['uid', 'qid', 'author_name', 'title'];
 }

@@ -10,5 +10,5 @@ class Question extends Model
 
     protected $primaryKey = 'id';
 
-    protected $fillable = ['uid', 'answer_Count', 'recent', 'title', 'content', 'exciting', 'naive', 'type','created_at'];
+    protected $fillable = ['uid', 'answer_Count', 'recent', 'title', 'content', 'exciting', 'naive', 'type', 'author_name'];
 }
