@@ -41,7 +41,7 @@ class QuestionController extends Controller
         $question_m = new Question();
         $data = [
             'uid' => $user_info['id'],
-            'author_name' => $user_info['usernmae'],
+            'author_name' => $user_info['username'],
             'title' => $question_info['title'],
             'content' => $question_info['content'],
             'type' => $type
@@ -79,6 +79,17 @@ class QuestionController extends Controller
                 'status' => 403,
                 'info' => '拒绝服务'
             ], 403);
+
+        $condition = [
+            'qid' => $qid,
+            'best' => 1,
+        ];
+        $res = $answer_m->where($condition)->update(['best' => 0]);
+        if (!$res)
+            return response()->json([
+                'status' => 500,
+                'info' => '未知错误'
+            ], 500);
 
         $data = [
             'best' => 1,

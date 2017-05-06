@@ -48,6 +48,13 @@ class AnswerController extends Controller
             ], 400);
 
         $answer_m = new Answer();
+        $question_m = new Question();
+        if (!$question_m->where(['id' => $answer_info['qid']])->first())
+            return response()->json([
+                'status' => 400,
+                'info' => 'qid未找到'
+            ], 400);
+
         $data = [
             'uid' => $user_info['id'],
             'qid' => $answer_info['qid'],
@@ -58,6 +65,8 @@ class AnswerController extends Controller
                 'status' => 500,
                 'info' => 'failed'
             ], 500);
+
+        $question_m->where('id', $answer_info['qid'])->increment('answerCount', 1);
 
         return response()->json([
             'status' => 200,

@@ -64,13 +64,13 @@ Route::group(['middleware' => ['web'], 'prefix' => 'api'], function () {
         Route::group(['middleware' => ['zhihu.verify']], function () {
             Route::post('/modifyAvatar', 'UserController@modifyAvatar');
             Route::post('/changePassword', 'UserController@changePassword');
-            Route::post('/getQuestionList', 'QuestionController@getQuestionList');
-            Route::post('/getAnswerList', 'AnswerController@getAnswerList');
+            Route::get('/getQuestionList', 'QuestionController@getQuestionList');
+            Route::get('/getAnswerList', 'AnswerController@getAnswerList');
             Route::post('/question', 'QuestionController@question');
             Route::post('/answer', 'AnswerController@answer');
             Route::post('/favorite', 'FavoriteController@favorite');
             Route::post('/cancelFavorite', 'FavoriteController@cancelFavorite');
-            Route::post('/getFavoriteList', 'FavoriteController@getFavoriteList');
+            Route::get('/getFavoriteList', 'FavoriteController@getFavoriteList');
             Route::post('/accept', 'QuestionController@accept');
         });
     });
