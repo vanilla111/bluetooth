@@ -97,7 +97,7 @@ return [
 
         'zhihu_user' => [
             'driver' => 'eloquent',
-            'model' => App\Models\zhihu\User::class
+            'model' => App\Models\Zhihu\User::class
         ]
 
         // 'users' => [

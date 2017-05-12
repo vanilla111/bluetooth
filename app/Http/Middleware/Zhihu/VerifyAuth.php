@@ -3,6 +3,7 @@
 namespace App\Http\Middleware\Zhihu;
 
 use Closure;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Auth;
 
 class VerifyAuth
@@ -16,10 +17,23 @@ class VerifyAuth
      */
     public function handle($request, Closure $next)
     {
-        if (! $user = Auth::guard('zhihu_user')->authenticate()) {
+//        if (! $user = Auth::guard('zhihu_user')->authenticate()) {
+//            return response()->json([
+//                'status' => 404,
+//                'message' => 'user_not_found'], 404);
+//        }
+
+        try {
+            if (!$user = Auth::guard('zhihu_user')->authenticate())
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'user_not_found'
+                ], 404);
+        } catch (AuthenticationException $e) {
             return response()->json([
                 'status' => 404,
-                'message' => 'user_not_found'], 404);
+                'message' => 'user_not_found'
+            ], 404);
         }
 
         $request->attributes->add(compact('user'));
