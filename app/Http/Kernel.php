@@ -55,10 +55,5 @@ class Kernel extends HttpKernel
         'tea.statistics' => \App\Http\Middleware\Teacher\Statistics::class,
         'tea.stu.list' => \App\Http\Middleware\Teacher\StuList::class,
 
-        'zhihu.user' => \App\Http\Middleware\Zhihu\User::class,
-        'zhihu.question' => \App\Http\Middleware\Zhihu\Question::class,
-        'zhihu.answer' => \App\Http\Middleware\Zhihu\Answer::class,
-        'zhihu.favorite' => \App\Http\Middleware\Zhihu\Favorite::class,
-        'zhihu.verify' => \App\Http\Middleware\Zhihu\VerifyAuth::class,
     ];
 }

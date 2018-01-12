@@ -57,23 +57,6 @@ Route::group(['middleware' => ['web'], 'prefix' => 'api'], function () {
         });
     });
 
-    //为了应付而写
-    Route::group(['prefix' => 'zhihu', 'namespace' => 'Zhihu'], function() {
-        Route::post('/register', 'UserController@toRegister');
-        Route::post('/login', 'UserController@toLogin');
-        Route::group(['middleware' => ['zhihu.verify']], function () {
-            Route::post('/modifyAvatar', 'UserController@modifyAvatar');
-            Route::post('/changePassword', 'UserController@changePassword');
-            Route::get('/getQuestionList', 'QuestionController@getQuestionList');
-            Route::get('/getAnswerList', 'AnswerController@getAnswerList');
-            Route::post('/question', 'QuestionController@question');
-            Route::post('/answer', 'AnswerController@answer');
-            Route::post('/favorite', 'FavoriteController@favorite');
-            Route::post('/cancelFavorite', 'FavoriteController@cancelFavorite');
-            Route::get('/getFavoriteList', 'FavoriteController@getFavoriteList');
-            Route::post('/accept', 'QuestionController@accept');
-        });
-    });
 });
 
 

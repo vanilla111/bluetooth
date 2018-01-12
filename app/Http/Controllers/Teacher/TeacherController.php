@@ -23,30 +23,6 @@ class TeacherController extends Controller
 
     protected $guard = 'teachers';
 
-    public function test(Request $request)
-    {
-        //
-//        $res = SList::where(['jxbID' => 'A04162041830001'])->select('stu_list')->first();
-//        $stu_list = unserialize($res['stu_list']);
-//        //return response()->json($stu_list);
-//        $status = [];
-//        for ($i = 0; $i < count($stu_list); $i ++) {
-//            $status[$i] = random_int(1, 5);
-//        }
-//        return implode(',' , $status);
-        $start = 6972;
-        $end = 12652;
-        for ($i = $start; $i <= $end; $i++) {
-            $res = TCourse::where('tcid', $i)->select('scNum')->first();
-            $data = [
-                'scNum' => trim($res['scNum'])
-            ];
-            $res = TCourse::where('tcid', $i)->update($data);
-        }
-
-
-    }
-
     public function toLogin(Request $request)
     {
         return view('login');
