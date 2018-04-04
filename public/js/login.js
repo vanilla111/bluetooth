@@ -2,12 +2,13 @@ window.onload = function () {
 
 	var from = $('#sub');
 	var token;
+	var ip = "http://123.207.9.187";
 
 	from.click(function (e) {
 		var data = {};
 		data.trid = $('#trid')[0].value;
 		data.password = $('#password')[0].value;
-		$.post("http://www.redleaf.wang/api/teacher/login",data,
+		$.post(ip + "/api/teacher/login",data,
 			function(result){
 	    		if(result.status == 200) {
 	    			data = result.data;

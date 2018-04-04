@@ -9,10 +9,10 @@
 
     <title>bluetoor</title>
 
-    <link href="css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
-    <link href="font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
-    <link href="css/animate.css" rel="stylesheet">
-    <link href="css/style.css?v=2.2.0" rel="stylesheet">
+    <link href="{{ URL::asset('css/bootstrap.min.css?v=3.4.0') }}" rel="stylesheet">
+    <link href="{{ URL::asset('font-awesome/css/font-awesome.css?v=4.3.0') }}" rel="stylesheet">
+    <link href="{{ URL::asset('css/animate.css') }}" rel="stylesheet">
+    <link href="{{ URL::asset('css/style.css?v=2.2.0') }}" rel="stylesheet">
 </head>
 
 <body class="top-navigation">
@@ -257,12 +257,12 @@
     </div>
 </div>
 <!-- Mainly scripts -->
-<script src="js/jquery-2.1.1.min.js"></script>
-<script src="js/bootstrap.min.js?v=3.4.0"></script>
-<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-<script src="js/plugins/echarts/echarts.js"></script>
-<script src="js/index.js"></script>
+<script src="{{ URL::asset('js/jquery-2.1.1.min.js') }}"></script>
+<script src="{{ URL::asset('js/bootstrap.min.js?v=3.4.0') }}"></script>
+<script src="{{ URL::asset('js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
+<script src="{{ URL::asset('js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
+<script src="{{ URL::asset('js/plugins/echarts/echarts.js') }}"></script>
+<script src="{{ URL::asset('js/index.js') }}"></script>
 
 </body>
 </html>

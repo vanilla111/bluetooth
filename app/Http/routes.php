@@ -31,6 +31,7 @@ Route::group(['middleware' => ['web'], 'prefix' => 'api'], function () {
     //教师操作
     Route::group(['prefix' => 'teacher', 'namespace' => 'Teacher'], function () {
         Route::post('/login', 'TeacherController@login');//登录
+        Route::get('/login', 'TeacherController@toLogin');//登录
         Route::group(['middleware' => ['jwt.teacher']], function () {
             Route::get('/course', 'TeacherController@getCourse');//获取教师课程表
             Route::get('/stulist', 'TeacherController@getStuListByJxbID');//获取指定教学班的学生名单
