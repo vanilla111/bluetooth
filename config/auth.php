@@ -56,10 +56,6 @@ return [
             'provider' => 'teachers'
         ],
 
-        'zhihu_user' => [
-            'driver' => 'jwt',
-            'provider' => 'zhihu_user'
-        ]
     ],
 
     /*

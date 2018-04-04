@@ -58,7 +58,6 @@ class StudentController extends Controller
             'password' => Hash::make($credentials['password']),
             'stuName' => $stu_info['data']['name'],
             'idNum' => $stu_info['data']['idNum'],
-            'stuName' => $stu_info['data']['name'],
             'gender' => $stu_info['data']['gender'],
             'stuClass' => $stu_info['data']['classNum'],
             'stuMajor' => $stu_info['data']['major'],

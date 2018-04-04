@@ -33,6 +33,15 @@ class TeacherController extends Controller
         return view('index');
     }
 
+    public function test(Request $request) {
+        $arr = [];
+        for ($i = 0; $i < 49; $i++) {
+            $arr[$i] = rand(0, 5);
+        }
+
+        return implode(",", $arr);
+    }
+
     /*登录*/
     public function login(Request $request)
     {
@@ -131,20 +140,20 @@ class TeacherController extends Controller
         $jxbID = $request->get('jxbID');
         $user = $request->get('user');
 
-        if (! $res = SList::where('jxbID', $jxbID)->select('stu_list')->first())
+        $slist_m = new SList();
+        if (! $list = $slist_m->getStuListByJxbId($jxbID))
             return response()->json([
                 'status' => 403,
                 'message' => 'failed',
             ], 403);
 
-        @ $List = unserialize($res['stu_list']);
 
         return response()->json([
             'status' => 200,
             'message' => 'success',
             'trid' => $user['trid'],
-            'data_num' => count($List),
-            'data' => $List
+            'data_num' => count($list),
+            'data' => $list
         ], 200);
     }
 
@@ -172,13 +181,14 @@ class TeacherController extends Controller
                 'message' => '这节课不存在'
             ], 404);
 
-        if (! $res2 = SList::where('jxbID', $info['jxbID'])->select('stu_list')->first())
+        $slist_m = new SList();
+        if (! $list = $slist_m->getStuListByJxbId($info['jxbID']))
             return response()->json([
                 'status' => 400,
                 'message' => '考勤失败'
             ], 400);
 
-        $list = unserialize($res2['stu_list']);
+
         if (count($list) != count($data))
             return response()->json([
                 'status' => 403,
@@ -203,7 +213,7 @@ class TeacherController extends Controller
                 'hash_lesson' => $info['hash_lesson'],
                 'major' => $value['major'],
                 'grade' => $value['grade'],
-                'class' => $value['calss'],  //抓取数据临时更改如此
+                'class' => $value['class'],
                 'scNum' => $res1['scNum'],
                 'status' => $data[$i]
             ];
@@ -240,9 +250,9 @@ class TeacherController extends Controller
                 ], 200);
         }
         //获取该教学班的人数
-        $list = SList::where(['jxbID' => $info['jxbID']])->select('stu_list')->first();
-        $stu_list = unserialize($list['stu_list']);
-        $stu_num = count($stu_list);
+        $slist_m = new SList();
+
+        $stu_num = $slist_m->getJxbStuNum($info['jxbID']);
 
         //将考勤信息统计
         $teacher_m = new Teacher();

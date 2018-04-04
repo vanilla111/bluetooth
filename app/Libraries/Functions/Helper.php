@@ -48,7 +48,7 @@ if (! function_exists('getNowWeek')) {
         $now = time();
 
         $start_week = date("W", $term_start);
-        $now_week = date("W", $now) + 1;
+        $now_week = date("W", $now);
 
         return $now_week - $start_week;
     }
